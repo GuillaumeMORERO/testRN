@@ -11,21 +11,22 @@ export default () => {
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
-  const [isFetching, setIsFetching] = useState(false);
+  // const [isFetching, setIsFetching] = useState(false);
 
 
-  useEffect(() => {
-    if (isFetching) {
-      console.log('useEffect triggered :', isFetching);
-        if (page < totalPage) {
-          // console.log('page : ', page);
-          // console.log('totalPage : ', totalPage);
-          // console.log('message saisi :', typedText);
-          // console.log('ok ça reload !');
-          loadFilms();
-        }
-    }
-  }, [isFetching]);
+  // useEffect(() => {
+  //   if (isFetching) {
+  //     console.log('ça va fetcher :', isFetching);
+  //     pageSetter(false);
+  //     loadFilms();
+  //   }
+  // }, [isFetching]);
+
+  // console.log('pagetest : ', page);
+  // console.log('pagetest +1 : ', page+1);
+
+  // console.log('page de départ :', page);
+  // console.log('liste de films :', filmList.length);
 
   const textHandler = (text) => {
     setTypedText(text);
@@ -34,33 +35,44 @@ export default () => {
   const loadFilms = () => {
     
     if (typedText.length > 0) {
-
       setIsLoading(true);
-
+      // console.log('page dans fonction avant :', page);
+      // setPage(page + 1);
+      // console.log('page dans fonction après :', page);
+      // setPage(page + 1);
       getFilmsFromApiWithSearchedText(typedText, page+1).then(data => {
-       
+        // console.log('data :', data);
+        // console.log('page dans fonction après :', page);
+        // console.log('data.page :', data.page);
+        // console.log('data.total_pages :', data.total_pages);
         setPage(data.page);
         setTotalPage(data.total_pages);
-        const newList = filmList.concat(data.results);
-        console.log('newList : ', newList);
-        setFilmList(newList);
+        setFilmList(...filmList, data.results);
+        // setFilmList(data.results);
         setIsLoading(false);
-
       });
     }
   }
 
-
-  const fetcherer = (value) => {
-    setIsFetching(value);
+  const loadMoreFilms = () => {
+    console.log('page de loadMore :', page);
+    console.log('totalPage de loadMore :', totalPage);
+    if (page < totalPage) {
+      loadFilms();
+      console.log('ok ça reload !');
+    }
   }
+
+  // const pageSetter = (value) => {
+  //   console.log('scroll ?')
+  //   setIsFetching(value);
+  // }
 
   const searchFilms = () => {
     setPage(0);
     setTotalPage(0);
     setFilmList([]);
-    console.log('nouveau texte saisi : ', typedText);
-    console.log('nouvelle recherche : ', filmList);
+    setTypedText('');
     loadFilms();
   }
 
@@ -119,8 +131,8 @@ export default () => {
         data={filmList}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({item}) => <FilmItem film={item}/>}
-        onEndReachedThreshold={0.5}
-        onEndReached={() => fetcherer(true)}
+        onEndReachedThreshold={1}
+        onEndReached={() => loadMoreFilms()}
       />
       {displayLoading()}
     </View>
