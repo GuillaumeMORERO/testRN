@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ActivityIndicator, ScrollView, Image } from 'react-native';
+import { StyleSheet, View, Text, ActivityIndicator, ScrollView, Image, TouchableOpacity } from 'react-native';
 import moment from 'moment';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { toggle_favorite } from '../Store/Actions/actions'
 
 import { getFilmDetailFromApi, getImageFromApi } from '../API/TMDBApi';
 
@@ -8,12 +11,29 @@ export default (filmId) => {
 
   const idFilm = filmId.route.params.filmId;
 
+  const dispatch = useDispatch();
+  const {favoritesFilm} = useSelector((state) => state.favorite);
+
   const [isLoading, setIsLoading] = useState(true);
   const [film, setFilm] = useState('');
 
   useEffect(() => {
     getFilm();
   }, []);
+
+  const displayFavoriteImage = () => {
+    var sourceImage = require('../Images/ic_favorite_border.png')
+    if (favoritesFilm.findIndex(item => item.id === film.id) !== -1) {
+      // Film dans nos favoris
+      sourceImage = require('../Images/ic_favorite.png')
+    }
+    return (
+      <Image
+        style={styles.favorite_image}
+        source={sourceImage}
+      />
+    )
+  }
 
   const displayLoading = () => {
     if (isLoading) {
@@ -42,6 +62,12 @@ export default (filmId) => {
             source={{uri: getImageFromApi(film.backdrop_path)}}
           />
           <Text style={styles.title_text}>{film.title}</Text>
+          {console.log('state des fims favoris ? : ', film)}
+          <TouchableOpacity
+            style={styles.favorite_container}
+            onPress={() => dispatch(toggle_favorite(film))}>
+            {displayFavoriteImage()}
+          </TouchableOpacity>
           <Text style={styles.description_text}>{film.overview}</Text>
           <Text style={styles.default_text}>Sorti le {moment(new Date(film.release_date)).format('DD/MM/YYYY')}</Text>
           <Text style={styles.default_text}>Note : {film.vote_average} / 10</Text>
@@ -101,6 +127,13 @@ export default (filmId) => {
       marginLeft: 5,
       marginRight: 5,
       marginTop: 5,
+    },
+    favorite_container: {
+      alignItems: 'center', // Alignement des components enfants sur l'axe secondaire, X ici
+    },
+    favorite_image: {
+      width: 40,
+      height: 40,
     }
   })
   
@@ -108,6 +141,7 @@ export default (filmId) => {
     <View style={styles.main_container}>
       {displayLoading()}
       {displayFilm()}
+      
     </View>
   )
 
