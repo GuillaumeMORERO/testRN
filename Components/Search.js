@@ -4,7 +4,7 @@ import { getFilmsFromApiWithSearchedText } from '../API/TMDBApi';
 
 import FilmItem from './FilmItem'
 
-export default () => {
+export default ({ navigation }) => {
 
   const [filmList, setFilmList] = useState([]);
   const [typedText, setTypedText] = useState('');
@@ -15,15 +15,8 @@ export default () => {
 
 
   useEffect(() => {
-    if (isFetching) {
-      console.log('useEffect triggered :', isFetching);
-        if (page < totalPage) {
-          // console.log('page : ', page);
-          // console.log('totalPage : ', totalPage);
-          // console.log('message saisi :', typedText);
-          // console.log('ok ça reload !');
-          loadFilms();
-        }
+    if (isFetching && page < totalPage) {
+      loadFilms();
     }
   }, [isFetching]);
 
@@ -32,24 +25,19 @@ export default () => {
   }
 
   const loadFilms = () => {
-    
     if (typedText.length > 0) {
 
       setIsLoading(true);
 
       getFilmsFromApiWithSearchedText(typedText, page+1).then(data => {
-       
         setPage(data.page);
         setTotalPage(data.total_pages);
         const newList = filmList.concat(data.results);
-        console.log('newList : ', newList);
         setFilmList(newList);
         setIsLoading(false);
-
       });
     }
   }
-
 
   const fetcherer = (value) => {
     setIsFetching(value);
@@ -59,8 +47,6 @@ export default () => {
     setPage(0);
     setTotalPage(0);
     setFilmList([]);
-    console.log('nouveau texte saisi : ', typedText);
-    console.log('nouvelle recherche : ', filmList);
     loadFilms();
   }
 
@@ -74,10 +60,13 @@ export default () => {
     }
   }
 
+  const displayDetailForFilm = (filmId) => {
+    navigation.navigate("Détails d'un film", {filmId: filmId});
+  }
 
   const styles = StyleSheet.create({
     main_container : {
-      marginTop: 30,
+      // marginTop: 30,
       flex: 1
     },
     textinput: {
@@ -118,7 +107,7 @@ export default () => {
         /* https://reactnative.dev/docs/flatlist */
         data={filmList}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({item}) => <FilmItem film={item}/>}
+        renderItem={({item}) => <FilmItem film={item} props={displayDetailForFilm} />}
         onEndReachedThreshold={0.5}
         onEndReached={() => fetcherer(true)}
       />

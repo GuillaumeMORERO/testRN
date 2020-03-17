@@ -1,8 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { getImageFromApi } from '../API/TMDBApi'
 
 export default (film) => {
+
+  // console.log('definition de fonction : ', film.props);
+  // console.log('definition de film : ', film.film);
+
+  const displayDetailForFilm = film.props;
 
   const styles = StyleSheet.create({
     main_container: {
@@ -51,7 +56,10 @@ export default (film) => {
   })
   
   return (
-      <View style={styles.main_container}>
+      <TouchableOpacity
+        style={styles.main_container}
+        onPress={() => displayDetailForFilm(film.film.id)}
+        >
         <Image
           style={styles.image}
           source={{uri: getImageFromApi(film.film.poster_path)}}
@@ -69,6 +77,6 @@ export default (film) => {
             <Text style={styles.date_text}>Sorti le {film.film.release_date}</Text>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
   )
 }

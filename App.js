@@ -1,19 +1,22 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import Search from "./Components/Search";
+import FilmDetail from "./Components/FilmDetail";
 
-export default function App() {
+const Stack = createStackNavigator();
+
+function App() {
   return (
-    <Search/>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Rechercher des films">
+        <Stack.Screen name="Rechercher des films" component={Search} />
+        <Stack.Screen name="Détails d'un film" component={FilmDetail} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
