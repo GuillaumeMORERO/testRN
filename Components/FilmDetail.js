@@ -23,8 +23,9 @@ export default (filmId) => {
 
   const displayFavoriteImage = () => {
     var sourceImage = require('../Images/ic_favorite_border.png')
+    console.log('favoritesFilm : ', favoritesFilm);
     if (favoritesFilm.findIndex(item => item.id === film.id) !== -1) {
-      // Film dans nos favoris
+   
       sourceImage = require('../Images/ic_favorite.png')
     }
     return (
@@ -33,6 +34,10 @@ export default (filmId) => {
         source={sourceImage}
       />
     )
+  }
+
+  const favoriteMaker = (film) => {
+    dispatch(toggle_favorite(film));
   }
 
   const displayLoading = () => {
@@ -62,10 +67,9 @@ export default (filmId) => {
             source={{uri: getImageFromApi(film.backdrop_path)}}
           />
           <Text style={styles.title_text}>{film.title}</Text>
-          {console.log('state des fims favoris ? : ', film)}
           <TouchableOpacity
             style={styles.favorite_container}
-            onPress={() => dispatch(toggle_favorite(film))}>
+            onPress={() => favoriteMaker(film)}>
             {displayFavoriteImage()}
           </TouchableOpacity>
           <Text style={styles.description_text}>{film.overview}</Text>

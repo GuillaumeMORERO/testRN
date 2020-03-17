@@ -6,24 +6,26 @@ const initialState = {
 
 export default (state = initialState, action) => {
   let nextState
-  console.log('contenu de l\'action : ', action);
   switch(action.type) {
     case TOGGLE_FAVORITE:
-      const favoriteFilmIndex = state.favoritesFilm.findIndex(item => item.id === action.value.id)
-      if (favoriteFilmIndex !== -1) {
-        // Le film est déjà dans les favoris, on le supprime de la liste
+      
+      const filmID = action.film.id;
+      const favoriteFilmIndex = state.favoritesFilm.findIndex(item => item.id === filmID);
+      // ça renvoie l'indice qui correspond au filmID, sinon ça renvoie -1
+      if (favoriteFilmIndex == -1) {
+        // -1 ? Alors on rajoute le film dans le state
         nextState = {
           ...state,
-          favoritesFilm: state.favoritesFilm.filter( (item, index) => index !== favoriteFilmIndex)
+          favoritesFilm: [...state.favoritesFilm, action.film]
         }
-      }
-      else {
-        // Le film n'est pas dans les films favoris, on l'ajoute à la liste
+      } else {
+        // sinon on l'enléve
         nextState = {
           ...state,
-          favoritesFilm: [...state.favoritesFilm, action.value]
+          favoritesFilm: state.favoritesFilm.filter( (index) => index == favoriteFilmIndex)
         }
       }
+      console.log('nextState : ', nextState);
       return nextState || state
 
     default: {
