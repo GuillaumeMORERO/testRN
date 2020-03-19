@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import FilmItem from './FilmItem'
 
-export default ({ films, navigation, page, totalPage, loadFilms }) => {
+export default ({ films, navigation, page, totalPage, loadFilms, favoriteList }) => {
 
   const {favoritesFilm} = useSelector((state) => state.favorite);
 
@@ -31,7 +31,7 @@ export default ({ films, navigation, page, totalPage, loadFilms }) => {
         />}
       onEndReachedThreshold={0.5}
       onEndReached={() => {
-        if (page < totalPage) {
+        if (!favoriteList && page < totalPage) {
           loadFilms()
         }
       }}

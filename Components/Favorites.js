@@ -1,11 +1,20 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
+
+import FilmList from './FilmList';
+
+import { useSelector } from 'react-redux';
 
 export default () => {
+
+  const {favoritesFilm} = useSelector((state) => state.favorite);
 
   const styles = StyleSheet.create({})
   
   return (
-    <Text>Mes Favoris</Text>
+    <FilmList
+      films={favoritesFilm}
+      favoriteList={true}
+    />
   )
 }

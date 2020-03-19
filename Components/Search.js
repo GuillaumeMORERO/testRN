@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, TextInput, Button, View, FlatList, Text, ActivityIndicator } from 'react-native';
 import { getFilmsFromApiWithSearchedText } from '../API/TMDBApi';
 
-import FilmItem from './FilmItem';
 import FilmList from './FilmList';
 
 export default ({ navigation }) => {
@@ -110,6 +109,7 @@ export default ({ navigation }) => {
         page={page}
         totalPage={totalPage}
         loadFilms={loadFilms}
+        favoriteList={false}
       />
       {displayLoading()}
     </View>

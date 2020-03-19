@@ -20,7 +20,13 @@ export default (filmId) => {
   const [film, setFilm] = useState('');
 
   useEffect(() => {
-    getFilm();
+    const favoriteFilmIndex = favoritesFilm.findIndex(item => item.id === idFilm)
+    if (favoriteFilmIndex !== -1) {
+      getOneFilm(favoriteFilmIndex);
+    } else {
+      getFilm();
+    }
+    
   }, []);
 
   const displayFavoriteImage = () => {
@@ -57,7 +63,10 @@ export default (filmId) => {
       setFilm(data);
       setIsLoading(false);
     })
+  }
 
+  const getOneFilm = (index) => {
+    setFilm(favoritesFilm[index]);
   }
 
   const displayFilm = () => {

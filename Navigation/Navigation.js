@@ -28,7 +28,7 @@ export default () => {
         var sourceImage = require('../Images/ic_search.png');
         return sourceImage
       }
-      case 'Mes films favoris': {
+      case 'Favoris': {
         var sourceImage = require('../Images/ic_favorite.png');
         return sourceImage
       }
@@ -44,6 +44,14 @@ export default () => {
     return (
       <FilmStack.Navigator initialRouteName="Rechercher des films">
         <FilmStack.Screen name="Rechercher des films" component={Search} />
+        <FilmStack.Screen name="Détails d'un film" component={FilmDetail} />
+      </FilmStack.Navigator>
+    )
+  }
+  const FavoriteStackScreen = () => {
+    return (
+      <FilmStack.Navigator>
+        <FilmStack.Screen name="Mes films favoris" component={Favorites} />
         <FilmStack.Screen name="Détails d'un film" component={FilmDetail} />
       </FilmStack.Navigator>
     )
@@ -68,7 +76,7 @@ export default () => {
           }} 
         >
 
-          <Tab.Screen name="Mes films favoris" component={Favorites} />
+          <Tab.Screen name="Favoris" component={FavoriteStackScreen} />
           <Tab.Screen name="Recherche" component={FilmStackScreen} />
 
         </Tab.Navigator>
