@@ -2,12 +2,26 @@ import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { getImageFromApi } from '../API/TMDBApi'
 
+import { useSelector } from 'react-redux';
+
 export default (film) => {
 
-  // console.log('definition de fonction : ', film.props);
-  // console.log('definition de film : ', film.film);
-
   const displayDetailForFilm = film.props;
+
+  const {favoritesFilm} = useSelector((state) => state.favorite);
+
+  const displayFavoriteImage = () => {
+    var sourceImage = require('../Images/ic_favorite.png');
+    const isFilmFavorite = favoritesFilm.findIndex(item => item.id === film.film.id) !== -1 ? true : false;
+    if (isFilmFavorite) {
+      return (
+        <Image
+          style={styles.favorite_image}
+          source={sourceImage}
+        />
+      )
+    }
+  }
 
   const styles = StyleSheet.create({
     main_container: {
@@ -52,6 +66,10 @@ export default (film) => {
     date_text: {
       textAlign: 'right',
       fontSize: 14
+    },
+    favorite_image: {
+      width: 20,
+      height: 20,
     }
   })
   
@@ -66,6 +84,7 @@ export default (film) => {
         />
         <View style={styles.content_container}>
           <View style={styles.header_container}>
+            {displayFavoriteImage()}
             <Text style={styles.title_text}>{film.film.title}</Text>
             <Text style={styles.vote_text}>{film.film.vote_average}</Text>
           </View>

@@ -23,7 +23,7 @@ export default (filmId) => {
 
   const displayFavoriteImage = () => {
     var sourceImage = require('../Images/ic_favorite_border.png')
-    console.log('favoritesFilm : ', favoritesFilm);
+    // console.log('favoritesFilm : ', favoritesFilm);
     if (favoritesFilm.findIndex(item => item.id === film.id) !== -1) {
    
       sourceImage = require('../Images/ic_favorite.png')

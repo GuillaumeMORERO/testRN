@@ -107,7 +107,11 @@ export default ({ navigation }) => {
         /* https://reactnative.dev/docs/flatlist */
         data={filmList}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({item}) => <FilmItem film={item} props={displayDetailForFilm} />}
+        renderItem={({item}) =>
+          <FilmItem
+            film={item}
+            props={displayDetailForFilm}
+          />}
         onEndReachedThreshold={0.5}
         onEndReached={() => fetcherer(true)}
       />

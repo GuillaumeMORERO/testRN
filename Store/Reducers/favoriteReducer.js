@@ -22,10 +22,9 @@ export default (state = initialState, action) => {
         // sinon on l'enléve
         nextState = {
           ...state,
-          favoritesFilm: state.favoritesFilm.filter( (index) => index == favoriteFilmIndex)
+          favoritesFilm: state.favoritesFilm.filter( (item, index) => index !== favoriteFilmIndex)
         }
       }
-      console.log('nextState : ', nextState);
       return nextState || state
 
     default: {
