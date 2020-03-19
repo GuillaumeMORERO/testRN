@@ -2,17 +2,16 @@ import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { getImageFromApi } from '../API/TMDBApi'
 
-import { useSelector } from 'react-redux';
-
 export default (film) => {
 
-  const displayDetailForFilm = film.props;
+  // item d'un film dans la liste
+  // console.log('film de FilItem : ', film)
 
-  const {favoritesFilm} = useSelector((state) => state.favorite);
+  const displayDetailForFilm = film.props;
+  const isFilmFavorite = film.isFilmFavorite;
 
   const displayFavoriteImage = () => {
     var sourceImage = require('../Images/ic_favorite.png');
-    const isFilmFavorite = favoritesFilm.findIndex(item => item.id === film.film.id) !== -1 ? true : false;
     if (isFilmFavorite) {
       return (
         <Image

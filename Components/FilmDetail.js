@@ -8,6 +8,8 @@ import { toggle_favorite } from '../Store/Actions/actions'
 import { getFilmDetailFromApi, getImageFromApi } from '../API/TMDBApi';
 
 export default (filmId) => {
+  
+  // afiche la page détail d'un film
 
   const idFilm = filmId.route.params.filmId;
 
@@ -145,7 +147,6 @@ export default (filmId) => {
     <View style={styles.main_container}>
       {displayLoading()}
       {displayFilm()}
-      
     </View>
   )
 

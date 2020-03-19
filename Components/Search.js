@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, TextInput, Button, View, FlatList, Text, ActivityIndicator } from 'react-native';
 import { getFilmsFromApiWithSearchedText } from '../API/TMDBApi';
 
-import FilmItem from './FilmItem'
+import FilmItem from './FilmItem';
+import FilmList from './FilmList';
 
 export default ({ navigation }) => {
 
@@ -103,17 +104,12 @@ export default ({ navigation }) => {
         onPress={() => searchFilms()}
         style={{ height: 50 }}
         />
-      <FlatList
-        /* https://reactnative.dev/docs/flatlist */
-        data={filmList}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({item}) =>
-          <FilmItem
-            film={item}
-            props={displayDetailForFilm}
-          />}
-        onEndReachedThreshold={0.5}
-        onEndReached={() => fetcherer(true)}
+      <FilmList
+        films={filmList}
+        navigation={displayDetailForFilm}
+        page={page}
+        totalPage={totalPage}
+        loadFilms={loadFilms}
       />
       {displayLoading()}
     </View>
