@@ -10,7 +10,7 @@ import { getFilmDetailFromApi, getImageFromApi } from '../API/TMDBApi';
 export default (filmId) => {
   
   // afiche la page détail d'un film
-
+  // console.log('id reçu par filmDetail : ', filmId.route.params.filmId);
   const idFilm = filmId.route.params.filmId;
 
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ export default (filmId) => {
   const [film, setFilm] = useState('');
 
   useEffect(() => {
-    const favoriteFilmIndex = favoritesFilm.findIndex(item => item.id === idFilm)
+    const favoriteFilmIndex = favoritesFilm.findIndex(item => item.id === idFilm);
     if (favoriteFilmIndex !== -1) {
       getOneFilm(favoriteFilmIndex);
     } else {
@@ -67,6 +67,7 @@ export default (filmId) => {
 
   const getOneFilm = (index) => {
     setFilm(favoritesFilm[index]);
+    setIsLoading(false);
   }
 
   const displayFilm = () => {

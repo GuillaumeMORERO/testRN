@@ -15,10 +15,10 @@ export default ({ navigation }) => {
 
 
   useEffect(() => {
-    if (isFetching && page < totalPage) {
+    if ( page < totalPage) {
       loadFilms();
     }
-  }, [isFetching]);
+  }, []);
 
   const textHandler = (text) => {
     setTypedText(text);
@@ -30,18 +30,29 @@ export default ({ navigation }) => {
       setIsLoading(true);
 
       getFilmsFromApiWithSearchedText(typedText, page+1).then(data => {
-        setPage(data.page);
-        setTotalPage(data.total_pages);
+        // setPage(data.page);
+        // setTotalPage(data.total_pages);
         const newList = filmList.concat(data.results);
-        setFilmList(newList);
-        setIsLoading(false);
+        pageSetter(data.page, data.total_pages);
+        listSetter(newList);
+        // setFilmList(newList);
+        // setIsLoading(false);
       });
     }
   }
 
-  const fetcherer = (value) => {
-    setIsFetching(value);
+  const pageSetter = (newPage, newTotalPge) => {
+    setPage(newPage);
+    setTotalPage(newTotalPge);
   }
+  const listSetter = (newList) => {
+    setFilmList(newList);
+    setIsLoading(false);
+  }
+
+  // const fetcherer = (value) => {
+  //   setIsFetching(value);
+  // }
 
   const searchFilms = () => {
     setPage(0);
